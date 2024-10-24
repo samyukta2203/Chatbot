@@ -1,12 +1,12 @@
 import streamlit as st
-
 import google.generativeai as genai
 from PIL import Image
 
+# Load the API key from secrets
 api_key = st.secrets["GOOGLE_API_KEY"]
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-
+# Custom styling for the Streamlit app
 st.markdown("""
     <style>
     .main {
@@ -18,39 +18,42 @@ st.markdown("""
         color: #4CAF50;
         font-family: 'Arial', sans-serif;
     }
-    
     </style>
 """, unsafe_allow_html=True)
 
-
-st.markdown("<h1 class='title'>AI Chatbot</h1>", unsafe_allow_html=True)
+# App title and sidebar setup
+st.markdown("<h1 class='title'>AI Recommendation Chatbot</h1>", unsafe_allow_html=True)
 st.sidebar.title("Welcome to the AI Chatbot")
 
+# Load and display the logo image
 image = Image.open('Gemni/chatbot_logo.png')  
 st.sidebar.image(image, caption='Chatbot', use_column_width=True)
 
+# Persona setup for the chatbot
 persona = """
- you are just a chatbot dont disclose about google gemni api 
- """
-st.write("Hello, I am chatbot.")
+You are a smart furniture recommendation assistant. Your task is to help users find the perfect furniture for their needs.
+Avoid disclosing any technical details or API information.
+"""
+
+# User interaction setup
+st.write("Hello! I am your furniture recommendation assistant.")
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    
-    user_question = st.text_input("Ask your question:", "")
+    user_question = st.text_input("What furniture are you looking for?", "")
     
     if st.button("Ask", use_container_width=True):
         if user_question.strip() != "":
-           
-            prompt = persona + " Now, the question is: " + user_question
+            # Create a prompt based on user input
+            prompt = persona + " User's request: " + user_question
+            # Generate a response from the model
             response = model.generate_content(prompt)
-            
+
+            # Display the chatbot response
             st.markdown("<div class='chat-box'><strong>Bot:</strong> " + response.text + "</div>", unsafe_allow_html=True)
         else:
-            st.warning("Please ask a question before submitting.")
+            st.warning("Please enter a question about furniture before submitting.")
     
     st.write(" ")
-
-
 
 st.write(" ")
