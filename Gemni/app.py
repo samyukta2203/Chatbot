@@ -35,6 +35,15 @@ You are a smart furniture recommendation assistant. Your task is to help users f
 Avoid disclosing any technical details or API information.
 """
 
+# A simple mapping of furniture types to product links
+furniture_links = {
+    "sofa": "https://example.com/sofa",
+    "chair": "https://example.com/chair",
+    "table": "https://example.com/table",
+    "bed": "https://example.com/bed",
+    "shelf": "https://example.com/shelf",
+}
+
 # User interaction setup
 st.write("Hello! I am your furniture recommendation assistant.")
 col1, col2 = st.columns([3, 1])
@@ -49,8 +58,18 @@ with col1:
             # Generate a response from the model
             response = model.generate_content(prompt)
 
+            # Check if the user's question matches any furniture type in the mapping
+            link = None
+            for furniture in furniture_links.keys():
+                if furniture in user_question.lower():
+                    link = furniture_links[furniture]
+                    break
+
             # Display the chatbot response
-            st.markdown("<div class='chat-box'><strong>Bot:</strong> " + response.text + "</div>", unsafe_allow_html=True)
+            if link:
+                st.markdown("<div class='chat-box'><strong>Bot:</strong> " + response.text + f" You can check out this link for more options: <a href='{link}' target='_blank'>View here</a></div>", unsafe_allow_html=True)
+            else:
+                st.markdown("<div class='chat-box'><strong>Bot:</strong> " + response.text + "</div>", unsafe_allow_html=True)
         else:
             st.warning("Please enter a question about furniture before submitting.")
     
