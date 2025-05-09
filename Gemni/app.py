@@ -18,19 +18,19 @@ st.session_state.dark_mode = st.sidebar.toggle(
 )
 
 # Define aesthetic colors
-bg_color = "#121212" if st.session_state.dark_mode else "#f4f4f4"
-text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
-chat_bg_user = "#4a90e2" if st.session_state.dark_mode else "#d1e7dd"
-chat_bg_bot = "#2c3e50" if st.session_state.dark_mode else "#ffffff"
+bg_color = "#f4f4f4" if not st.session_state.dark_mode else "#1c1c1c"
+text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
+chat_bg_user = "#00796b" if not st.session_state.dark_mode else "#009688"
+chat_bg_bot = "#e0e0e0" if not st.session_state.dark_mode else "#333333"
 toggle_color = "#0f62fe" if st.session_state.dark_mode else "#4CAF50"
-sidebar_bg_color = "#1a1a1a" if st.session_state.dark_mode else "#ffffff"
-sidebar_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
+sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
+sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
-button_bg_color = "#4CAF50" if st.session_state.dark_mode else "#0D47A1"
+button_bg_color = "#00796b" if not st.session_state.dark_mode else "#009688"
 button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
 button_text_color = "#ffffff"
-input_bg_color = "#333333" if st.session_state.dark_mode else "#f1f1f1"
-input_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
+input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
+input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -41,66 +41,59 @@ st.markdown(f"""
         font-family: 'Arial', sans-serif;
     }}
     .title {{
-        color: #4CAF50;
-        font-size: 36px;
+        font-size: 32px;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 30px;
-        letter-spacing: 1px;
+        margin-top: 20px;
     }}
     .chat-container {{
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 12px;
         margin-top: 40px;
         padding: 0 15%;
-        transition: all 0.3s ease;
     }}
     .chat-box {{
-        padding: 14px 18px;
+        padding: 12px 18px;
         border-radius: 16px;
-        max-width: 75%;
+        max-width: 70%;
         font-size: 16px;
         word-wrap: break-word;
         line-height: 1.6;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }}
     .user {{
         align-self: flex-end;
         background-color: {chat_bg_user};
-        color: #fff;
+        color: white;
         text-align: right;
-        margin-bottom: 15px;
-        transform: translateX(10px);
+        border-radius: 20px 20px 0 20px;
     }}
     .bot {{
         align-self: flex-start;
         background-color: {chat_bg_bot};
         color: {conversation_text_color};
         text-align: left;
-        margin-bottom: 15px;
-        transform: translateX(-10px);
+        border-radius: 20px 20px 20px 0;
     }}
     .recommend-link {{
         display: inline-block;
         margin-top: 10px;
         padding: 8px 14px;
-        background-color: #4CAF50;
+        background-color: {button_bg_color};
         color: white;
         text-decoration: none;
-        border-radius: 5px;
+        border-radius: 8px;
         font-size: 14px;
-        transition: background-color 0.3s ease;
     }}
     .recommend-link:hover {{
-        background-color: #45a049;
+        background-color: {button_hover_color};
     }}
     .ask-button {{
-        background: linear-gradient(90deg, {button_bg_color}, #388E3C);
+        background: {button_bg_color};
         color: {button_text_color};
-        border-radius: 50px;
-        padding: 12px 30px;
+        border-radius: 30px;
+        padding: 12px 24px;
         font-size: 16px;
         font-weight: bold;
         text-transform: uppercase;
@@ -137,18 +130,11 @@ st.markdown(f"""
         background-color: {sidebar_bg_color} !important;
         color: {sidebar_text_color} !important;
     }}
-    .sidebar .sidebar-header {{
-        font-size: 22px;
-        color: {sidebar_text_color};
-    }}
-    .sidebar .sidebar-content .stTextInput input {{
-        color: {sidebar_text_color};
-    }}
     </style>
 """, unsafe_allow_html=True)
 
 # ---------- Title ----------
-st.markdown("<div class='title'>AI Furniture Recommendation Chatbot</div>", unsafe_allow_html=True)
+st.markdown("<div class='title'>Furniture Recommendation Chatbot</div>", unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
 st.sidebar.title("Welcome")
