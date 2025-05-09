@@ -6,23 +6,25 @@ from PIL import Image
 api_key = st.secrets["GOOGLE_API_KEY"]
 model = genai.GenerativeModel("gemini-1.5-flash")
 
-# Theme toggle for background only
+# Toggle state
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
-mode = st.toggle("Dark Mode", key="dark_toggle")
-st.session_state.dark_mode = mode
+st.sidebar.markdown("### 🌓 Theme")
+st.session_state.dark_mode = st.sidebar.toggle("Dark Mode")
 
-# Background style toggle
-background_style = "#121212" if st.session_state.dark_mode else "#ffffff"
+# CSS colors
+bg_color = "#121212" if st.session_state.dark_mode else "#ffffff"
+text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
+chat_bg_user = "#d1e7dd" if not st.session_state.dark_mode else "#333333"
+chat_bg_bot = "#f8f9fa" if not st.session_state.dark_mode else "#1e1e1e"
 
-# ---------- Styling ----------
+# ---------- Custom Styling ----------
 st.markdown(f"""
     <style>
-    body {{
-        background-color: {background_style};
-        color: #000000;
-        font-family: 'Segoe UI', sans-serif;
+    html, body, [data-testid="stApp"] {{
+        background-color: {bg_color} !important;
+        color: {text_color} !important;
     }}
     .title {{
         color: #4CAF50;
@@ -39,22 +41,22 @@ st.markdown(f"""
     }}
     .chat-box {{
         padding: 12px 16px;
-        border-radius: 8px;
+        border-radius: 10px;
         max-width: 80%;
-        line-height: 1.6;
-        word-wrap: break-word;
         font-size: 16px;
-        background-color: #f0f0f0;
-        color: #000000;
+        word-wrap: break-word;
+        line-height: 1.5;
     }}
     .user {{
         align-self: flex-end;
-        background-color: #e0e0e0;
+        background-color: {chat_bg_user};
+        color: {text_color};
         text-align: right;
     }}
     .bot {{
         align-self: flex-start;
-        background-color: #e8e8e8;
+        background-color: {chat_bg_bot};
+        color: {text_color};
         text-align: left;
     }}
     .recommend-link {{
@@ -78,7 +80,7 @@ st.sidebar.title("Welcome")
 image = Image.open("Gemni/chatbot_logo.png")
 st.sidebar.image(image, caption="Chatbot", use_container_width=True)
 
-st.sidebar.markdown("### Tips")
+st.sidebar.markdown("### 💬 Tips")
 st.sidebar.info("Ask something like:\n- Suggest a bed for a small room\n- I need a table\n- Show me a comfy sofa")
 
 # ---------- Chat Setup ----------
