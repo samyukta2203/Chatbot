@@ -6,65 +6,85 @@ from PIL import Image
 api_key = st.secrets["GOOGLE_API_KEY"]
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-# Custom CSS for enhanced styling
+# ---------------- CSS Styling ---------------- #
 st.markdown("""
     <style>
-    .main {
+    body {
         background-color: #f5f5f5;
-        padding: 20px;
-        border-radius: 10px;
+        font-family: 'Segoe UI', sans-serif;
     }
     .title {
         color: #4CAF50;
-        font-family: 'Arial', sans-serif;
+        font-size: 36px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
     }
     .chat-container {
         max-height: 400px;
         overflow-y: auto;
-        padding: 10px;
+        padding: 15px;
         background-color: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-    .user-msg, .bot-msg {
-        margin: 10px 0;
-        padding: 10px;
-        border-radius: 8px;
-        max-width: 80%;
-    }
-    .user-msg {
-        background-color: #e6f7ff;
-        align-self: flex-end;
-        margin-left: auto;
-    }
-    .bot-msg {
-        background-color: #f0f0f0;
-        align-self: flex-start;
-    }
-    .chat-box {
+        border: 1px solid #cccccc;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
+        gap: 12px;
+    }
+    .user-msg, .bot-msg {
+        padding: 12px 15px;
+        border-radius: 10px;
+        max-width: 80%;
+        line-height: 1.5;
+        font-size: 15px;
+        word-wrap: break-word;
+    }
+    .user-msg {
+        background-color: #d1ecf1;
+        align-self: flex-end;
+        color: #0c5460;
+    }
+    .bot-msg {
+        background-color: #f8f9fa;
+        align-self: flex-start;
+        color: #333;
+    }
+    .chat-input {
+        margin-top: 20px;
+    }
+    a.button-link > button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    a.button-link > button:hover {
+        background-color: #45a049;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# App title and sidebar setup
-st.markdown("<h1 class='title'>AI Furniture Recommendation Chatbot</h1>", unsafe_allow_html=True)
-st.sidebar.title("Welcome to the AI Chatbot")
+# ---------------- App Layout ---------------- #
+st.markdown("<div class='title'>AI Furniture Recommendation Chatbot</div>", unsafe_allow_html=True)
+st.sidebar.title("Welcome!")
 
-# Load and display the logo image
+# Sidebar content
 image = Image.open('Gemni/chatbot_logo.png')
 st.sidebar.image(image, caption='Chatbot', use_column_width=True)
 
-# Sidebar instructions
 st.sidebar.markdown("### How to Use")
-st.sidebar.info("Ask me for furniture suggestions based on your needs. Example: 'I need a modern sofa for a small room'.")
+st.sidebar.info("Type your furniture needs. Example:\n'I need a sofa for a small room.'")
 
 st.sidebar.markdown("### Quick Suggestions")
 st.sidebar.markdown("- Sofa\n- Chair\n- Table\n- Bed\n- Shelf")
 
-# Persona setup
+# Persona
 persona = """
 You are a smart furniture recommendation assistant. Your task is to help users find the perfect furniture for their needs.
 Avoid disclosing any technical details or API information.
@@ -79,35 +99,32 @@ furniture_links = {
     "shelf": "https://example.com/shelf",
 }
 
-# Initialize chat history in session state
+# Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Text input for user question
-user_question = st.text_input("What furniture are you looking for?", "")
+# Chat input
+user_question = st.text_input("What furniture are you looking for?", key="input")
 
 if st.button("Ask", use_container_width=True):
     if user_question.strip() != "":
-        # Append user message
         st.session_state.messages.append(("user", user_question))
 
-        # Create prompt and get response
         prompt = persona + " User's request: " + user_question
         with st.spinner("Thinking..."):
-            response = model.generate_content(prompt).text
+            response_text = model.generate_content(prompt).text
 
-        # Append bot response
-        st.session_state.messages.append(("bot", response))
+        st.session_state.messages.append(("bot", response_text))
     else:
-        st.warning("Please enter a question about furniture before submitting.")
+        st.warning("Please enter your question.")
 
-# Chat display area
-st.markdown("<div class='chat-container chat-box'>", unsafe_allow_html=True)
+# ---------------- Chat Display ---------------- #
+st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
 for role, message in st.session_state.messages:
     if role == "user":
-        st.markdown(f"<div class='user-msg'>You: {message}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='user-msg'>{message}</div>", unsafe_allow_html=True)
     else:
-        # Check for matching furniture link
+        # Check for matching furniture type
         link = None
         for furniture in furniture_links:
             if furniture in message.lower():
@@ -115,6 +132,7 @@ for role, message in st.session_state.messages:
                 break
 
         if link:
-            message += f"<br><a href='{link}' target='_blank'><button style='background-color:#4CAF50;color:white;padding:6px 10px;border:none;border-radius:5px;margin-top:5px;'>View Recommendations</button></a>"
-        st.markdown(f"<div class='bot-msg'>Bot: {message}</div>", unsafe_allow_html=True)
+            message += f"<br><a href='{link}' target='_blank' class='button-link'><button>View Recommendations</button></a>"
+        st.markdown(f"<div class='bot-msg'>{message}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
+
