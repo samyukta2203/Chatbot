@@ -11,13 +11,18 @@ if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
 st.sidebar.markdown("### 🌓 Theme")
-st.session_state.dark_mode = st.sidebar.toggle("Dark Mode")
+st.session_state.dark_mode = st.sidebar.toggle(
+    "Dark Mode",
+    help="Switch between light and dark background",
+    label_visibility="visible"
+)
 
 # CSS colors
 bg_color = "#121212" if st.session_state.dark_mode else "#ffffff"
 text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
-chat_bg_user = "#d1e7dd" if not st.session_state.dark_mode else "#333333"
-chat_bg_bot = "#f8f9fa" if not st.session_state.dark_mode else "#1e1e1e"
+chat_bg_user = "#4a90e2" if st.session_state.dark_mode else "#d1e7dd"
+chat_bg_bot = "#2c3e50" if st.session_state.dark_mode else "#f8f9fa"
+toggle_color = "#0f62fe" if st.session_state.dark_mode else "#4CAF50"
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -38,26 +43,29 @@ st.markdown(f"""
         flex-direction: column;
         gap: 16px;
         margin-top: 25px;
+        padding: 0 10%;
     }}
     .chat-box {{
-        padding: 12px 16px;
-        border-radius: 10px;
-        max-width: 80%;
+        padding: 14px 18px;
+        border-radius: 14px;
+        max-width: 70%;
         font-size: 16px;
         word-wrap: break-word;
-        line-height: 1.5;
+        line-height: 1.6;
     }}
     .user {{
         align-self: flex-end;
         background-color: {chat_bg_user};
-        color: {text_color};
+        color: #fff;
         text-align: right;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }}
     .bot {{
         align-self: flex-start;
         background-color: {chat_bg_bot};
-        color: {text_color};
+        color: #fff;
         text-align: left;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }}
     .recommend-link {{
         display: inline-block;
@@ -68,6 +76,9 @@ st.markdown(f"""
         text-decoration: none;
         border-radius: 5px;
         font-size: 14px;
+    }}
+    [data-testid="stToggle"] .st-bx {{
+        background-color: {toggle_color} !important;
     }}
     </style>
 """, unsafe_allow_html=True)
