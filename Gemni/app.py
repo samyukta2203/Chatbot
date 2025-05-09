@@ -29,6 +29,8 @@ conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 button_bg_color = "#4CAF50" if st.session_state.dark_mode else "#0D47A1"
 button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
 button_text_color = "#ffffff"
+input_bg_color = "#333333" if st.session_state.dark_mode else "#f1f1f1"
+input_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -118,8 +120,18 @@ st.markdown(f"""
     .ask-button:focus {{
         outline: none;
     }}
-    [data-testid="stToggle"] .st-bx {{
-        background-color: {toggle_color} !important;
+    .stTextInput input {{
+        background-color: {input_bg_color} !important;
+        color: {input_text_color} !important;
+        border-radius: 12px;
+        padding: 12px 15px;
+        border: none;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }}
+    .stTextInput input:focus {{
+        box-shadow: 0 0 5px {button_bg_color};
+        outline: none;
     }}
     .sidebar .sidebar-content {{
         background-color: {sidebar_bg_color} !important;
@@ -165,9 +177,8 @@ if "chat_history" not in st.session_state:
 # ---------- Input ----------
 user_input = st.text_input("What furniture are you looking for?", key="input")
 
-# ---------- Ask Button (with styling) ----------
-if st.button("Ask", use_container_width=True, key="ask_button"):
-    st.markdown('<button class="ask-button">Ask</button>', unsafe_allow_html=True)
+# ---------- Ask Button ----------
+if st.button("Ask", use_container_width=True):
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
 
