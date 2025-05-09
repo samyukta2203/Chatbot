@@ -6,30 +6,22 @@ from PIL import Image
 api_key = st.secrets["GOOGLE_API_KEY"]
 model = genai.GenerativeModel("gemini-1.5-flash")
 
-# Theme toggle
+# Theme toggle for background only
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
 mode = st.toggle("Dark Mode", key="dark_toggle")
 st.session_state.dark_mode = mode
 
-# ---------- Styling ----------
-if st.session_state.dark_mode:
-    bg_color = "#121212"
-    text_color = "#f5f5f5"
-    user_bg = "#1e88e5"
-    bot_bg = "#43a047"
-else:
-    bg_color = "#ffffff"
-    text_color = "#000000"
-    user_bg = "#e3f2fd"
-    bot_bg = "#f1f8e9"
+# Background style toggle
+background_style = "#121212" if st.session_state.dark_mode else "#ffffff"
 
+# ---------- Styling ----------
 st.markdown(f"""
     <style>
     body {{
-        background-color: {bg_color};
-        color: {text_color};
+        background-color: {background_style};
+        color: #000000;
         font-family: 'Segoe UI', sans-serif;
     }}
     .title {{
@@ -42,26 +34,27 @@ st.markdown(f"""
     .chat-container {{
         display: flex;
         flex-direction: column;
-        gap: 18px;
+        gap: 16px;
         margin-top: 25px;
     }}
     .chat-box {{
-        padding: 14px 18px;
-        border-radius: 12px;
-        max-width: 85%;
+        padding: 12px 16px;
+        border-radius: 8px;
+        max-width: 80%;
         line-height: 1.6;
         word-wrap: break-word;
-        font-size: 15px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        font-size: 16px;
+        background-color: #f0f0f0;
+        color: #000000;
     }}
     .user {{
-        background-color: {user_bg};
         align-self: flex-end;
+        background-color: #e0e0e0;
         text-align: right;
     }}
     .bot {{
-        background-color: {bot_bg};
         align-self: flex-start;
+        background-color: #e8e8e8;
         text-align: left;
     }}
     .recommend-link {{
