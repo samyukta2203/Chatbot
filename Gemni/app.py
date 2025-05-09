@@ -26,6 +26,9 @@ toggle_color = "#0f62fe" if st.session_state.dark_mode else "#4CAF50"
 sidebar_bg_color = "#1a1a1a" if st.session_state.dark_mode else "#ffffff"
 sidebar_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
+button_bg_color = "#4CAF50" if st.session_state.dark_mode else "#0D47A1"
+button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
+button_text_color = "#ffffff"
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -91,6 +94,29 @@ st.markdown(f"""
     .recommend-link:hover {{
         background-color: #45a049;
     }}
+    .ask-button {{
+        background: linear-gradient(90deg, {button_bg_color}, #388E3C);
+        color: {button_text_color};
+        border-radius: 50px;
+        padding: 12px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+    }}
+    .ask-button:hover {{
+        background-color: {button_hover_color};
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }}
+    .ask-button:active {{
+        transform: scale(0.98);
+    }}
+    .ask-button:focus {{
+        outline: none;
+    }}
     [data-testid="stToggle"] .st-bx {{
         background-color: {toggle_color} !important;
     }}
@@ -138,7 +164,9 @@ if "chat_history" not in st.session_state:
 # ---------- Input ----------
 user_input = st.text_input("What furniture are you looking for?", key="input")
 
-if st.button("Ask", use_container_width=True):
+# Aesthetic Ask Button
+if st.button("Ask", use_container_width=True, key="ask_button"):
+    st.markdown('<button class="ask-button">Ask</button>', unsafe_allow_html=True)
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
 
