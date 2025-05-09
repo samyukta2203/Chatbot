@@ -18,11 +18,13 @@ st.session_state.dark_mode = st.sidebar.toggle(
 )
 
 # CSS colors
-bg_color = "#121212" if st.session_state.dark_mode else "#ffffff"
+bg_color = "#121212" if st.session_state.dark_mode else "#f4f4f4"
 text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 chat_bg_user = "#4a90e2" if st.session_state.dark_mode else "#d1e7dd"
-chat_bg_bot = "#2c3e50" if st.session_state.dark_mode else "#f8f9fa"
+chat_bg_bot = "#2c3e50" if st.session_state.dark_mode else "#ffffff"
 toggle_color = "#0f62fe" if st.session_state.dark_mode else "#4CAF50"
+sidebar_bg_color = "#1a1a1a" if st.session_state.dark_mode else "#ffffff"
+sidebar_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -59,6 +61,7 @@ st.markdown(f"""
         color: #fff;
         text-align: right;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
     }}
     .bot {{
         align-self: flex-start;
@@ -66,6 +69,7 @@ st.markdown(f"""
         color: #fff;
         text-align: left;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
     }}
     .recommend-link {{
         display: inline-block;
@@ -79,6 +83,10 @@ st.markdown(f"""
     }}
     [data-testid="stToggle"] .st-bx {{
         background-color: {toggle_color} !important;
+    }}
+    .sidebar .sidebar-content {{
+        background-color: {sidebar_bg_color} !important;
+        color: {sidebar_text_color} !important;
     }}
     </style>
 """, unsafe_allow_html=True)
