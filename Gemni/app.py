@@ -106,6 +106,7 @@ st.markdown(f"""
         cursor: pointer;
         transition: all 0.3s ease;
         width: 100%;
+        margin-top: 15px;
     }}
     .ask-button:hover {{
         background-color: {button_hover_color};
@@ -164,7 +165,7 @@ if "chat_history" not in st.session_state:
 # ---------- Input ----------
 user_input = st.text_input("What furniture are you looking for?", key="input")
 
-# Aesthetic Ask Button
+# ---------- Ask Button (with styling) ----------
 if st.button("Ask", use_container_width=True, key="ask_button"):
     st.markdown('<button class="ask-button">Ask</button>', unsafe_allow_html=True)
     if user_input.strip():
