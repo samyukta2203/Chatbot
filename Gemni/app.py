@@ -25,6 +25,7 @@ chat_bg_bot = "#2c3e50" if st.session_state.dark_mode else "#ffffff"
 toggle_color = "#0f62fe" if st.session_state.dark_mode else "#4CAF50"
 sidebar_bg_color = "#1a1a1a" if st.session_state.dark_mode else "#ffffff"
 sidebar_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
+conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"  # Added for conversation font color
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -54,6 +55,7 @@ st.markdown(f"""
         font-size: 16px;
         word-wrap: break-word;
         line-height: 1.6;
+        color: {conversation_text_color};  /* Set dynamic color for conversation text */
     }}
     .user {{
         align-self: flex-end;
