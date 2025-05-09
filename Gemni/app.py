@@ -6,49 +6,65 @@ from PIL import Image
 api_key = st.secrets["GOOGLE_API_KEY"]
 model = genai.GenerativeModel("gemini-1.5-flash")
 
+# Theme toggle
+if "dark_mode" not in st.session_state:
+    st.session_state.dark_mode = False
+
+mode = st.toggle("Dark Mode", key="dark_toggle")
+st.session_state.dark_mode = mode
+
 # ---------- Styling ----------
-st.markdown("""
+if st.session_state.dark_mode:
+    bg_color = "#121212"
+    text_color = "#f5f5f5"
+    user_bg = "#1e88e5"
+    bot_bg = "#43a047"
+else:
+    bg_color = "#ffffff"
+    text_color = "#000000"
+    user_bg = "#e3f2fd"
+    bot_bg = "#f1f8e9"
+
+st.markdown(f"""
     <style>
-    body {
-        background-color: white;
-        color: black;
+    body {{
+        background-color: {bg_color};
+        color: {text_color};
         font-family: 'Segoe UI', sans-serif;
-    }
-    .title {
+    }}
+    .title {{
         color: #4CAF50;
         font-size: 36px;
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
-    }
-    .chat-container {
+    }}
+    .chat-container {{
         display: flex;
         flex-direction: column;
         gap: 18px;
         margin-top: 25px;
-    }
-    .chat-box {
+    }}
+    .chat-box {{
         padding: 14px 18px;
         border-radius: 12px;
         max-width: 85%;
         line-height: 1.6;
         word-wrap: break-word;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         font-size: 15px;
-        transition: background-color 0.3s ease;
-    }
-    .user {
-        background-color: #e3f2fd;
-        border-left: 4px solid #2196F3;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }}
+    .user {{
+        background-color: {user_bg};
         align-self: flex-end;
         text-align: right;
-    }
-    .bot {
-        background-color: #f9fbe7;
-        border-left: 4px solid #8bc34a;
+    }}
+    .bot {{
+        background-color: {bot_bg};
         align-self: flex-start;
-    }
-    .recommend-link {
+        text-align: left;
+    }}
+    .recommend-link {{
         display: inline-block;
         margin-top: 10px;
         padding: 6px 12px;
@@ -57,11 +73,7 @@ st.markdown("""
         text-decoration: none;
         border-radius: 5px;
         font-size: 14px;
-        transition: background-color 0.3s ease;
-    }
-    .recommend-link:hover {
-        background-color: #45a049;
-    }
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -104,7 +116,6 @@ if st.button("Ask", use_container_width=True):
             response = model.generate_content(prompt)
             reply = response.text
 
-        # Add link if furniture keyword detected
         for key, url in furniture_links.items():
             if key in user_input.lower():
                 reply += f"<br><a class='recommend-link' href='{url}' target='_blank'>View {key.title()} Options</a>"
