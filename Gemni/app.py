@@ -17,7 +17,7 @@ st.session_state.dark_mode = st.sidebar.toggle(
     label_visibility="visible"
 )
 
-# CSS colors
+# Define aesthetic colors
 bg_color = "#121212" if st.session_state.dark_mode else "#f4f4f4"
 text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 chat_bg_user = "#4a90e2" if st.session_state.dark_mode else "#d1e7dd"
@@ -25,7 +25,7 @@ chat_bg_bot = "#2c3e50" if st.session_state.dark_mode else "#ffffff"
 toggle_color = "#0f62fe" if st.session_state.dark_mode else "#4CAF50"
 sidebar_bg_color = "#1a1a1a" if st.session_state.dark_mode else "#ffffff"
 sidebar_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
-conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"  # Added for conversation font color
+conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -33,55 +33,63 @@ st.markdown(f"""
     html, body, [data-testid="stApp"] {{
         background-color: {bg_color} !important;
         color: {text_color} !important;
+        font-family: 'Arial', sans-serif;
     }}
     .title {{
         color: #4CAF50;
         font-size: 36px;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
     }}
     .chat-container {{
         display: flex;
         flex-direction: column;
-        gap: 16px;
-        margin-top: 25px;
-        padding: 0 10%;
+        gap: 20px;
+        margin-top: 40px;
+        padding: 0 15%;
+        transition: all 0.3s ease;
     }}
     .chat-box {{
         padding: 14px 18px;
-        border-radius: 14px;
-        max-width: 70%;
+        border-radius: 16px;
+        max-width: 75%;
         font-size: 16px;
         word-wrap: break-word;
         line-height: 1.6;
-        color: {conversation_text_color};  /* Set dynamic color for conversation text */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
     }}
     .user {{
         align-self: flex-end;
         background-color: {chat_bg_user};
         color: #fff;
         text-align: right;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         margin-bottom: 15px;
+        transform: translateX(10px);
     }}
     .bot {{
         align-self: flex-start;
         background-color: {chat_bg_bot};
-        color: #fff;
+        color: {conversation_text_color};
         text-align: left;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         margin-bottom: 15px;
+        transform: translateX(-10px);
     }}
     .recommend-link {{
         display: inline-block;
         margin-top: 10px;
-        padding: 6px 12px;
+        padding: 8px 14px;
         background-color: #4CAF50;
         color: white;
         text-decoration: none;
         border-radius: 5px;
         font-size: 14px;
+        transition: background-color 0.3s ease;
+    }}
+    .recommend-link:hover {{
+        background-color: #45a049;
     }}
     [data-testid="stToggle"] .st-bx {{
         background-color: {toggle_color} !important;
@@ -89,6 +97,13 @@ st.markdown(f"""
     .sidebar .sidebar-content {{
         background-color: {sidebar_bg_color} !important;
         color: {sidebar_text_color} !important;
+    }}
+    .sidebar .sidebar-header {{
+        font-size: 22px;
+        color: {sidebar_text_color};
+    }}
+    .sidebar .sidebar-content .stTextInput input {{
+        color: {sidebar_text_color};
     }}
     </style>
 """, unsafe_allow_html=True)
