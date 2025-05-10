@@ -10,18 +10,19 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
-st.sidebar.markdown("## 🛠️ Settings")
+st.sidebar.markdown("### 🌓 Theme")
 st.session_state.dark_mode = st.sidebar.toggle(
-    "🌗 Dark Mode",
-    help="Switch between light and dark theme",
+    "Dark Mode",
+    help="Switch between light and dark background",
     label_visibility="visible"
 )
 
-# Theme-dependent variables
+# Define aesthetic colors
 bg_color = "#f4f4f4" if not st.session_state.dark_mode else "#1c1c1c"
 text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 chat_bg_user = "#00796b" if not st.session_state.dark_mode else "#009688"
 chat_bg_bot = "#e0e0e0" if not st.session_state.dark_mode else "#333333"
+toggle_color = "#0f62fe" if st.session_state.dark_mode else "#4CAF50"
 sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
 sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
@@ -40,26 +41,28 @@ st.markdown(f"""
         font-family: 'Arial', sans-serif;
     }}
     .title {{
-        font-size: 32px;
+        font-size: 36px;
         font-weight: bold;
         text-align: center;
-        margin-top: 20px;
+        margin: 20px 0;
+        color: {text_color};
     }}
     .chat-container {{
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        margin-top: 40px;
-        padding: 0 10%;
+        gap: 16px;
+        margin-top: 20px;
+        padding: 0 15%;
     }}
     .chat-box {{
-        padding: 12px 18px;
+        padding: 14px 18px;
         border-radius: 16px;
+        max-width: fit-content;
         font-size: 16px;
         word-wrap: break-word;
         line-height: 1.6;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: fit-content;
+        margin-bottom: 8px;
     }}
     .user {{
         align-self: flex-end;
@@ -67,7 +70,6 @@ st.markdown(f"""
         color: white;
         text-align: right;
         border-radius: 20px 20px 0 20px;
-        margin-left: auto;
     }}
     .bot {{
         align-self: flex-start;
@@ -75,7 +77,6 @@ st.markdown(f"""
         color: {conversation_text_color};
         text-align: left;
         border-radius: 20px 20px 20px 0;
-        margin-right: auto;
     }}
     .recommend-link {{
         display: inline-block;
@@ -91,25 +92,28 @@ st.markdown(f"""
         background-color: {button_hover_color};
     }}
     .ask-button {{
-        background-color: {button_bg_color};
+        background: {button_bg_color};
         color: {button_text_color};
-        border: none;
         border-radius: 30px;
         padding: 12px 24px;
         font-size: 16px;
         font-weight: bold;
         text-transform: uppercase;
+        border: none;
         cursor: pointer;
-        transition: background 0.3s, transform 0.2s;
-        margin-top: 15px;
+        transition: all 0.3s ease;
         width: 100%;
+        margin-top: 15px;
     }}
     .ask-button:hover {{
         background-color: {button_hover_color};
-        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }}
     .ask-button:active {{
-        transform: scale(0.97);
+        transform: scale(0.98);
+    }}
+    .ask-button:focus {{
+        outline: none;
     }}
     .stTextInput input {{
         background-color: {input_bg_color} !important;
@@ -119,9 +123,9 @@ st.markdown(f"""
         border: none;
         font-size: 16px;
     }}
-    .stTextInput input:focus {{
-        box-shadow: 0 0 5px {button_bg_color};
-        outline: none;
+    .stTextInput input::placeholder {{
+        color: {input_text_color} !important;
+        opacity: 0.7;
     }}
     .sidebar .sidebar-content {{
         background-color: {sidebar_bg_color} !important;
@@ -131,21 +135,15 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ---------- Title ----------
-st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
+st.markdown("<div class='title'>🪑 CozySpace: Furniture Recommendation Chatbot</div>", unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
-st.sidebar.markdown("### 🤖 About")
+st.sidebar.title("🛋️ CozySpace Assistant")
 image = Image.open("Gemni/chatbot_logo.png")
-st.sidebar.image(image, caption="FurniMate Logo", use_container_width=True)
-st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
+st.sidebar.image(image, caption="Furniture Bot", use_container_width=True)
 
-st.sidebar.markdown("### 💡 Try Asking:")
-st.sidebar.markdown("""
-- 🛏️ Suggest a bed for a small room  
-- 🪑 I need a comfy chair  
-- 🛋️ Show me sofas  
-- 📚 Recommend a bookshelf
-""")
+st.sidebar.markdown("### 💡 Tips")
+st.sidebar.info("Try asking:\n- Recommend a bed for a small room\n- I need a dining table\n- Show me a comfy chair")
 
 # ---------- Chat Setup ----------
 persona = """
@@ -163,11 +161,10 @@ furniture_links = {
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ---------- Input ----------
+# ---------- Input & Button ----------
 user_input = st.text_input("What furniture are you looking for?", key="input")
 
-# ---------- Ask Button ----------
-if st.button("Ask", key="ask_btn", use_container_width=True):
+if st.button("Ask", use_container_width=True):
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
 
