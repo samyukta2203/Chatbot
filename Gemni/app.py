@@ -10,14 +10,14 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
-st.sidebar.markdown("### 🌓 Theme")
+st.sidebar.markdown("## 🛠️ Settings")
 st.session_state.dark_mode = st.sidebar.toggle(
-    "Dark Mode",
-    help="Switch between light and dark background",
+    "🌗 Dark Mode",
+    help="Switch between light and dark theme",
     label_visibility="visible"
 )
 
-# Define aesthetic colors
+# Theme-dependent variables
 bg_color = "#f4f4f4" if not st.session_state.dark_mode else "#1c1c1c"
 text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 chat_bg_user = "#00796b" if not st.session_state.dark_mode else "#009688"
@@ -68,6 +68,7 @@ st.markdown(f"""
         color: white;
         text-align: right;
         border-radius: 20px 20px 0 20px;
+        margin-left: auto;
     }}
     .bot {{
         align-self: flex-start;
@@ -75,6 +76,7 @@ st.markdown(f"""
         color: {conversation_text_color};
         text-align: left;
         border-radius: 20px 20px 20px 0;
+        margin-right: auto;
     }}
     .recommend-link {{
         display: inline-block;
@@ -90,25 +92,25 @@ st.markdown(f"""
         background-color: {button_hover_color};
     }}
     .ask-button {{
-        background: {button_bg_color};
+        background-color: {button_bg_color};
         color: {button_text_color};
+        border: none;
         border-radius: 30px;
         padding: 12px 24px;
         font-size: 16px;
         font-weight: bold;
         text-transform: uppercase;
-        border: none;
         cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
+        transition: background 0.3s, transform 0.2s;
         margin-top: 15px;
+        width: 100%;
     }}
     .ask-button:hover {{
         background-color: {button_hover_color};
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: scale(1.02);
     }}
     .ask-button:active {{
-        transform: scale(0.98);
+        transform: scale(0.97);
     }}
     .ask-button:focus {{
         outline: none;
@@ -134,15 +136,21 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ---------- Title ----------
-st.markdown("<div class='title'>Furniture Recommendation Chatbot</div>", unsafe_allow_html=True)
+st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
-st.sidebar.title("Welcome")
+st.sidebar.markdown("### 🤖 About")
 image = Image.open("Gemni/chatbot_logo.png")
-st.sidebar.image(image, caption="Chatbot", use_container_width=True)
+st.sidebar.image(image, caption="FurniMate Logo", use_container_width=True)
+st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
-st.sidebar.markdown("### 💬 Tips")
-st.sidebar.info("Ask something like:\n- Suggest a bed for a small room\n- I need a table\n- Show me a comfy sofa")
+st.sidebar.markdown("### 💡 Try Asking:")
+st.sidebar.markdown("""
+- `🛏️ Suggest a bed for a small room`  
+- `🪑 I need a comfy chair`  
+- `🛋️ Show me sofas`  
+- `📚 Recommend a bookshelf`
+""")
 
 # ---------- Chat Setup ----------
 persona = """
@@ -164,6 +172,9 @@ if "chat_history" not in st.session_state:
 user_input = st.text_input("What furniture are you looking for?", key="input")
 
 # ---------- Ask Button ----------
+ask_button_html = f"<button class='ask-button' onclick='document.querySelector(\"button[kind=primary]\").click()'>Ask</button>"
+st.markdown(ask_button_html, unsafe_allow_html=True)
+
 if st.button("Ask", use_container_width=True):
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
