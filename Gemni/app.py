@@ -22,7 +22,6 @@ bg_color = "#f4f4f4" if not st.session_state.dark_mode else "#1c1c1c"
 text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 chat_bg_user = "#00796b" if not st.session_state.dark_mode else "#009688"
 chat_bg_bot = "#e0e0e0" if not st.session_state.dark_mode else "#333333"
-toggle_color = "#0f62fe" if st.session_state.dark_mode else "#4CAF50"
 sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
 sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
@@ -49,18 +48,18 @@ st.markdown(f"""
     .chat-container {{
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 20px;
         margin-top: 40px;
-        padding: 0 15%;
+        padding: 0 10%;
     }}
     .chat-box {{
         padding: 12px 18px;
         border-radius: 16px;
-        max-width: 70%;
         font-size: 16px;
         word-wrap: break-word;
         line-height: 1.6;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: fit-content;
     }}
     .user {{
         align-self: flex-end;
@@ -112,9 +111,6 @@ st.markdown(f"""
     .ask-button:active {{
         transform: scale(0.97);
     }}
-    .ask-button:focus {{
-        outline: none;
-    }}
     .stTextInput input {{
         background-color: {input_bg_color} !important;
         color: {input_text_color} !important;
@@ -122,7 +118,6 @@ st.markdown(f"""
         padding: 12px 15px;
         border: none;
         font-size: 16px;
-        transition: all 0.3s ease;
     }}
     .stTextInput input:focus {{
         box-shadow: 0 0 5px {button_bg_color};
@@ -146,10 +141,10 @@ st.sidebar.info("FurniMate is your smart assistant for personalized furniture su
 
 st.sidebar.markdown("### 💡 Try Asking:")
 st.sidebar.markdown("""
-- `🛏️ Suggest a bed for a small room`  
-- `🪑 I need a comfy chair`  
-- `🛋️ Show me sofas`  
-- `📚 Recommend a bookshelf`
+- 🛏️ Suggest a bed for a small room  
+- 🪑 I need a comfy chair  
+- 🛋️ Show me sofas  
+- 📚 Recommend a bookshelf
 """)
 
 # ---------- Chat Setup ----------
@@ -172,10 +167,7 @@ if "chat_history" not in st.session_state:
 user_input = st.text_input("What furniture are you looking for?", key="input")
 
 # ---------- Ask Button ----------
-ask_button_html = f"<button class='ask-button' onclick='document.querySelector(\"button[kind=primary]\").click()'>Ask</button>"
-st.markdown(ask_button_html, unsafe_allow_html=True)
-
-if st.button("Ask", use_container_width=True):
+if st.button("Ask", key="ask_btn", use_container_width=True):
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
 
