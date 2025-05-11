@@ -199,8 +199,9 @@ st.markdown("""
     </script>
 """, unsafe_allow_html=True)
 
-# Hidden input event (simulate a button click)
-ask_event = st.experimental_get_query_params().get("ask_event", None)
+# Use st.query_params() to detect button press
+query_params = st.query_params()
+ask_event = query_params.get("ask_event", None)
 
 if "ask_triggered" not in st.session_state:
     st.session_state.ask_triggered = False
