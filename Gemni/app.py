@@ -31,11 +31,10 @@ button_text_color = "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#00FF00"
+ask_button_label_color = "#ffffff" if not st.session_state.dark_mode else "#00FF00"  # Set label to white in bright mode
 ask_button_hover_color = "#FF0000"
 
 # ---------- Custom Styling ----------
-
 st.markdown(f"""
     <style>
     html, body, [data-testid="stApp"] {{
@@ -94,8 +93,6 @@ st.markdown(f"""
     .recommend-link:hover {{
         background-color: {button_hover_color};
     }}
-    
-    /* Ask Button */
     .ask-button {{
         background-color: {button_bg_color};
         color: {ask_button_label_color} !important;
@@ -118,47 +115,36 @@ st.markdown(f"""
     .ask-button:active {{
         transform: scale(0.97);
     }}
-
-    /* Custom Input Styling */
     .stTextInput input {{
         background-color: {input_bg_color} !important;
         color: {input_text_color} !important;
         border-radius: 12px;
-        padding: 14px 20px;
-        border: 2px solid {button_bg_color};
+        padding: 12px 15px;
+        border: none;
         font-size: 16px;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }}
-    .stTextInput input:hover {{
-        border-color: {ask_button_hover_color};
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }}
     .stTextInput input:focus {{
+        box-shadow: 0 0 5px {button_bg_color};
         outline: none;
-        border-color: {ask_button_hover_color};
-        box-shadow: 0 0 10px {ask_button_hover_color};
     }}
-    .stTextInput input::placeholder {{
-        color: {input_text_color};
-        font-style: italic;
+    /* Add styles to force the button label color */
+    .stButton button {{
+        color: {ask_button_label_color} !important;
     }}
     </style>
 """, unsafe_allow_html=True)
 
 # ---------- Title ----------
-
 st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
-
 image = Image.open("Gemni/chatbot_logo.png")
 st.sidebar.image(image, use_container_width=True)
 
 st.sidebar.markdown("""  
 **Welcome to FurniMate!**  
 Your home’s new best friend in furniture shopping. ✨  
-
+  
 **How it works:**  
 Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. 🛋️💡  
 """)
@@ -166,7 +152,7 @@ Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized
 st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
 st.sidebar.markdown("### 💡 Try Asking:")
-st.sidebar.markdown("""  
+st.sidebar.markdown("""
 - Suggest a cozy sofa for a living room  
 - I need a stylish desk  
 - Recommend a comfortable bed for a small room  
@@ -174,7 +160,6 @@ st.sidebar.markdown("""
 """)
 
 # ---------- Chat Setup ----------
-
 persona = """
 You are a helpful furniture recommendation assistant. Always respond like a friendly advisor and never mention being AI or an API.
 """
@@ -190,8 +175,7 @@ furniture_links = {
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ---------- Input with Styled Label ----------
-
+# ---------- Input ----------
 st.markdown(
     f"<div style='color:{input_label_color}; font-weight:600; font-size:16px; padding-bottom:6px;'>What furniture are you looking for?</div>",
     unsafe_allow_html=True
@@ -199,11 +183,12 @@ st.markdown(
 user_input = st.text_input("What furniture are you looking for?", key="input", label_visibility="collapsed")
 
 # ---------- Ask Button ----------
+ask_button = st.button("Ask", key="ask_btn", help="Click to get suggestions", use_container_width=True)
 
-if st.button("Ask", key="ask_btn", use_container_width=True, help="Click to ask the bot"):
+# Check if button is clicked
+if ask_button:
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
-
         prompt = persona + "\nUser: " + user_input
         with st.spinner("Generating recommendation..."):
             response = model.generate_content(prompt)
@@ -219,7 +204,6 @@ if st.button("Ask", key="ask_btn", use_container_width=True, help="Click to ask 
         st.warning("Please enter a question first.")
 
 # ---------- Display Chat ----------
-
 st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
 for sender, msg in st.session_state.chat_history:
     role_class = "user" if sender == "user" else "bot"
