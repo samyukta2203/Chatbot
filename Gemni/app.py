@@ -174,7 +174,8 @@ user_input = st.text_input("What furniture are you looking for?", key="input", l
 
 # ---------- Ask Button ----------
 if st.button("Ask", key="ask_btn", use_container_width=True):
-    if user_input.strip():
+    user_input = st.session_state.get("input", "")
+    if user_input and user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
 
         prompt = persona + "\nUser: " + user_input
@@ -197,4 +198,3 @@ for sender, msg in st.session_state.chat_history:
     role_class = "user" if sender == "user" else "bot"
     st.markdown(f"<div class='chat-box {role_class}'>{msg}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
-
