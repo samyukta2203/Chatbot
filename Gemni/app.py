@@ -25,13 +25,13 @@ chat_bg_bot = "#e0e0e0" if not st.session_state.dark_mode else "#333333"
 sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
 sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
-button_bg_color = "#00796b" if not st.session_state.dark_mode else "#009688"
+button_bg_color = "#000000" if not st.session_state.dark_mode else "#009688"  # Set to black for bright mode
 button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
-button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
+button_text_color = "#ffffff" if not st.session_state.dark_mode else "#ffffff"  # White text for button
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#ffffff"  # Change the label color here
+ask_button_label_color = "#ffffff"  # White text for Ask button
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
