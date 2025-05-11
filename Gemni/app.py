@@ -25,15 +25,13 @@ chat_bg_bot = "#e0e0e0" if not st.session_state.dark_mode else "#333333"
 sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
 sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
-button_bg_color = "#000000" if not st.session_state.dark_mode else "#009688"  # Set to black for bright mode
+button_bg_color = "#00796b" if not st.session_state.dark_mode else "#009688"
 button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
-button_text_color = "#ffffff" if not st.session_state.dark_mode else "#ffffff"  # White text for button
+button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#00FF00"  # Green text for Ask button
-ask_button_hover_color = "#FF0000"  # Red hover color for Ask button
-input_label_color_input = "#000000" if not st.session_state.dark_mode else "#ffffff"  # "What furniture are you looking for?" color
+ask_button_label_color = "#ffffff"  # Change the label color here
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -109,14 +107,14 @@ st.markdown(f"""
         width: 100%;
     }}
     .ask-button:hover {{
-        background-color: {ask_button_hover_color};
+        background-color: {button_hover_color};
         transform: scale(1.02);
     }}
     .ask-button:active {{
         transform: scale(0.97);
     }}
     label[for="input"] {{
-        color: {input_label_color_input} !important;
+        color: {input_label_color} !important;
         font-weight: bold;
         font-size: 16px;
     }}
@@ -150,11 +148,8 @@ Your home’s new best friend in furniture shopping. ✨
 **How it works:**  
 Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. It's like having a personal shopper who knows exactly what your home needs. 🛋️💡
 """)
-
-# **Correct placement of the logo above the welcome text**
 image = Image.open("Gemni/chatbot_logo.png")
-st.sidebar.image(image, use_container_width=True)  # Correct placement of the image
-
+st.sidebar.image(image, caption="FurniMate Logo", use_container_width=True)
 st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
 st.sidebar.markdown("### 💡 Try Asking:")
