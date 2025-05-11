@@ -137,7 +137,10 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# ---------- Sidebar Content ----------
+# ---------- Title ----------
+st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
+
+# ---------- Sidebar ----------
 st.sidebar.markdown("""
 **Welcome to FurniMate!**  
 Your home’s new best friend in furniture shopping. ✨  
@@ -145,11 +148,8 @@ Your home’s new best friend in furniture shopping. ✨
 **How it works:**  
 Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. It's like having a personal shopper who knows exactly what your home needs. 🛋️💡
 """)
-
-# Add the image above the title
 image = Image.open("Gemni/chatbot_logo.png")
 st.sidebar.image(image, caption="FurniMate Logo", use_container_width=True)
-
 st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
 st.sidebar.markdown("### 💡 Try Asking:")
