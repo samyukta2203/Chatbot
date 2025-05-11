@@ -27,7 +27,7 @@ sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 button_bg_color = "#00796b" if not st.session_state.dark_mode else "#009688"
 button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
-button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"  # FIXED HERE
+button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
@@ -93,7 +93,7 @@ st.markdown(f"""
     }}
     .ask-button {{
         background-color: {button_bg_color};
-        color: {button_text_color} !important;  /* FIXED HERE */
+        color: {button_text_color} !important;
         border: none;
         border-radius: 30px;
         padding: 12px 24px;
@@ -112,8 +112,10 @@ st.markdown(f"""
     .ask-button:active {{
         transform: scale(0.97);
     }}
-    .stTextInput label {{
+    label[for="input"] {{
         color: {input_label_color} !important;
+        font-weight: bold;
+        font-size: 16px;
     }}
     .stTextInput input {{
         background-color: {input_bg_color} !important;
@@ -168,7 +170,7 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # ---------- Input ----------
-user_input = st.text_input("What furniture are you looking for?", key="input")
+user_input = st.text_input("What furniture are you looking for?", key="input", label_visibility="visible")
 
 # ---------- Ask Button ----------
 if st.button("Ask", key="ask_btn", use_container_width=True):
@@ -195,3 +197,4 @@ for sender, msg in st.session_state.chat_history:
     role_class = "user" if sender == "user" else "bot"
     st.markdown(f"<div class='chat-box {role_class}'>{msg}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
+
