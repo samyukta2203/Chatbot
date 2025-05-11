@@ -31,7 +31,7 @@ button_text_color = "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#ffffff" if not st.session_state.dark_mode else "#00FF00"  # Set label to white in bright mode
+ask_button_label_color = "#ffffff" if not st.session_state.dark_mode else "#00FF00"
 ask_button_hover_color = "#FF0000"
 
 # ---------- Custom Styling ----------
@@ -127,7 +127,6 @@ st.markdown(f"""
         box-shadow: 0 0 5px {button_bg_color};
         outline: none;
     }}
-    /* Add styles to force the button label color */
     .stButton button {{
         color: {ask_button_label_color} !important;
     }}
@@ -138,9 +137,7 @@ st.markdown(f"""
 st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
-image = Image.open("Gemni/chatbot_logo.png")
-st.sidebar.image(image, use_container_width=True)
-
+# Removed chatbot logo image
 st.sidebar.markdown("""  
 **Welcome to FurniMate!**  
 Your home’s new best friend in furniture shopping. ✨  
@@ -185,7 +182,7 @@ user_input = st.text_input("What furniture are you looking for?", key="input", l
 # ---------- Ask Button ----------
 ask_button = st.button("Ask", key="ask_btn", help="Click to get suggestions", use_container_width=True)
 
-# Check if button is clicked
+# ---------- Handle Input ----------
 if ask_button:
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
