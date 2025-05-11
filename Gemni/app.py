@@ -31,7 +31,6 @@ button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#ffffff"  # Change the label color here
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -94,7 +93,7 @@ st.markdown(f"""
     }}
     .ask-button {{
         background-color: {button_bg_color};
-        color: {ask_button_label_color} !important;
+        color: {button_text_color} !important;
         border: none;
         border-radius: 30px;
         padding: 12px 24px;
@@ -141,23 +140,17 @@ st.markdown(f"""
 st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
-st.sidebar.markdown("""
-**Welcome to FurniMate!**  
-Your home’s new best friend in furniture shopping. ✨  
-
-**How it works:**  
-Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. It's like having a personal shopper who knows exactly what your home needs. 🛋️💡
-""")
+st.sidebar.markdown("### 🤖 About")
 image = Image.open("Gemni/chatbot_logo.png")
 st.sidebar.image(image, caption="FurniMate Logo", use_container_width=True)
 st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
 st.sidebar.markdown("### 💡 Try Asking:")
 st.sidebar.markdown("""
-- Suggest a cozy sofa for a living room  
-- I need a stylish desk  
-- Recommend a comfortable bed for a small room  
-- Show me trendy bookshelves
+- 🛏️ Suggest a bed for a small room  
+- 🪑 I need a comfy chair  
+- 🛋️ Show me sofas  
+- 📚 Recommend a bookshelf
 """)
 
 # ---------- Chat Setup ----------
@@ -181,7 +174,8 @@ user_input = st.text_input("What furniture are you looking for?", key="input", l
 
 # ---------- Ask Button ----------
 if st.button("Ask", key="ask_btn", use_container_width=True):
-    if user_input.strip():
+    user_input = st.session_state.get("input", "")
+    if user_input and user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
 
         prompt = persona + "\nUser: " + user_input
