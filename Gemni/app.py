@@ -48,8 +48,8 @@ st.markdown(f"""
     .chat-container {{
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        margin-top: 40px;
+        gap: 16px;
+        margin-top: 30px;
         padding: 0 10%;
     }}
     .chat-box {{
@@ -59,7 +59,8 @@ st.markdown(f"""
         word-wrap: break-word;
         line-height: 1.6;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: fit-content;
+        max-width: 80%;
+        width: fit-content;
     }}
     .user {{
         align-self: flex-end;
@@ -119,6 +120,10 @@ st.markdown(f"""
         border: none;
         font-size: 16px;
     }}
+    .stTextInput input::placeholder {{
+        color: {input_text_color} !important;
+        opacity: 0.6;
+    }}
     .stTextInput input:focus {{
         box-shadow: 0 0 5px {button_bg_color};
         outline: none;
@@ -163,10 +168,9 @@ furniture_links = {
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ---------- Input ----------
+# ---------- Input & Ask ----------
 user_input = st.text_input("What furniture are you looking for?", key="input")
 
-# ---------- Ask Button ----------
 if st.button("Ask", key="ask_btn", use_container_width=True):
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
