@@ -27,7 +27,7 @@ sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 button_bg_color = "#00796b" if not st.session_state.dark_mode else "#009688"
 button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
-button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"  # FIXED HERE
+button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
@@ -91,9 +91,9 @@ st.markdown(f"""
     .recommend-link:hover {{
         background-color: {button_hover_color};
     }}
-    .ask-button {{
+    .custom-button {{
         background-color: {button_bg_color};
-        color: {button_text_color} !important;  /* FIXED HERE */
+        color: {button_text_color} !important;
         border: none;
         border-radius: 30px;
         padding: 12px 24px;
@@ -104,13 +104,13 @@ st.markdown(f"""
         transition: background 0.3s, transform 0.2s;
         margin-top: 15px;
         width: 100%;
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
     }}
-    .ask-button:hover {{
+    .custom-button:hover {{
         background-color: {button_hover_color};
         transform: scale(1.02);
-    }}
-    .ask-button:active {{
-        transform: scale(0.97);
     }}
     .stTextInput label {{
         color: {input_label_color} !important;
@@ -168,26 +168,29 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # ---------- Input ----------
-user_input = st.text_input("What furniture are you looking for?", key="input")
+with st.form("chat_form", clear_on_submit=False):
+    user_input = st.text_input("What furniture are you looking for?", key="input")
+    submitted = st.form_submit_button(
+        label="Ask",
+        use_container_width=True
+    )
 
-# ---------- Ask Button ----------
-if st.button("Ask", key="ask_btn", use_container_width=True):
-    if user_input.strip():
-        st.session_state.chat_history.append(("user", user_input))
+# ---------- Ask Button Logic ----------
+if submitted and user_input.strip():
+    st.session_state.chat_history.append(("user", user_input))
+    prompt = persona + "\nUser: " + user_input
+    with st.spinner("Generating recommendation..."):
+        response = model.generate_content(prompt)
+        reply = response.text
 
-        prompt = persona + "\nUser: " + user_input
-        with st.spinner("Generating recommendation..."):
-            response = model.generate_content(prompt)
-            reply = response.text
+    for key, url in furniture_links.items():
+        if key in user_input.lower():
+            reply += f"<br><a class='recommend-link' href='{url}' target='_blank'>View {key.title()} Options</a>"
+            break
 
-        for key, url in furniture_links.items():
-            if key in user_input.lower():
-                reply += f"<br><a class='recommend-link' href='{url}' target='_blank'>View {key.title()} Options</a>"
-                break
-
-        st.session_state.chat_history.append(("bot", reply))
-    else:
-        st.warning("Please enter a question first.")
+    st.session_state.chat_history.append(("bot", reply))
+elif submitted:
+    st.warning("Please enter a question first.")
 
 # ---------- Display Chat ----------
 st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
