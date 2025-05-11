@@ -10,6 +10,7 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
+# Sidebar: Dark Mode First
 st.sidebar.markdown("## 🛠️ Settings")
 st.session_state.dark_mode = st.sidebar.toggle(
     "🌗 Dark Mode",
@@ -25,17 +26,15 @@ chat_bg_bot = "#e0e0e0" if not st.session_state.dark_mode else "#333333"
 sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
 sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
-button_bg_color = "#000000" if not st.session_state.dark_mode else "#009688"  # Set to black for bright mode
-button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
-button_text_color = "#ffffff" if not st.session_state.dark_mode else "#ffffff"  # White text for button
+button_bg_color = "#000000" if not st.session_state.dark_mode else "#009688"
+button_hover_color = "#1E3A8A" if not st.session_state.dark_mode else "#45a049"
+ask_button_label_color = "#00FF00"
+ask_button_hover_color = "#FF0000"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#00FF00"  # Green text for Ask button
-ask_button_hover_color = "#FF0000"  # Red hover color for Ask button
-input_label_color_input = "#000000" if not st.session_state.dark_mode else "#ffffff"  # "What furniture are you looking for?" color
+input_label_color_input = "#000000" if not st.session_state.dark_mode else "#ffffff"
 
-# ---------- Custom Styling ----------
+# Custom Styling
 st.markdown(f"""
     <style>
     html, body, [data-testid="stApp"] {{
@@ -142,7 +141,10 @@ st.markdown(f"""
 # ---------- Title ----------
 st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
-# ---------- Sidebar ----------
+# ---------- Sidebar Content ----------
+image = Image.open("Gemni/chatbot_logo.png")
+st.sidebar.image(image, use_container_width=True)
+
 st.sidebar.markdown("""
 **Welcome to FurniMate!**  
 Your home’s new best friend in furniture shopping. ✨  
@@ -150,10 +152,6 @@ Your home’s new best friend in furniture shopping. ✨
 **How it works:**  
 Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. It's like having a personal shopper who knows exactly what your home needs. 🛋️💡
 """)
-
-# **Correct placement of the logo above the welcome text**
-image = Image.open("Gemni/chatbot_logo.png")
-st.sidebar.image(image, use_container_width=True)  # Correct placement of the image
 
 st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
