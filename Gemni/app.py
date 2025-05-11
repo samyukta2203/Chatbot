@@ -116,7 +116,6 @@ st.markdown(f"""
     }}
     .ask-button span {{
         color: {ask_button_label_color} !important;
-        transition: color 0.3s;
     }}
     .ask-button:hover span {{
         color: {ask_button_hover_label_color} !important;
