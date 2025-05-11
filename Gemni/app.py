@@ -28,7 +28,8 @@ conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 button_bg_color = "#4CAF50"  # Green color for the "Ask" button in both modes
 button_hover_color = "#45a049"
 button_text_color = "#ffffff"  # White text for button
-ask_button_label_color = "#4CAF50"  # Green text color for the "Ask" button label
+ask_button_label_color = "#4CAF50"  # Green text color for the "Ask" button label by default
+ask_button_hover_label_color = "#FF5733"  # Red text on hover
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
@@ -113,6 +114,13 @@ st.markdown(f"""
     .ask-button:active {{
         transform: scale(0.97);
     }}
+    .ask-button span {{
+        color: {ask_button_label_color} !important;
+        transition: color 0.3s;
+    }}
+    .ask-button:hover span {{
+        color: {ask_button_hover_label_color} !important;
+    }}
     label[for="input"] {{
         color: {input_label_color} !important;
         font-weight: bold;
@@ -159,6 +167,9 @@ st.sidebar.markdown("""
 - Recommend a comfortable bed for a small room  
 - Show me trendy bookshelves
 """)
+
+# ---------- Title ----------
+st.markdown("<div class='title'>🛋️ FurniMate – Your Personalized Furniture Advisor</div>", unsafe_allow_html=True)
 
 # ---------- Chat Setup ----------
 persona = """
