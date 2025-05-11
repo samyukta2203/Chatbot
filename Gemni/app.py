@@ -94,6 +94,8 @@ st.markdown(f"""
     .recommend-link:hover {{
         background-color: {button_hover_color};
     }}
+    
+    /* Ask Button */
     .ask-button {{
         background-color: {button_bg_color};
         color: {ask_button_label_color} !important;
@@ -198,7 +200,7 @@ user_input = st.text_input("What furniture are you looking for?", key="input", l
 
 # ---------- Ask Button ----------
 
-if st.button("Ask", key="ask_btn", use_container_width=True):
+if st.button("Ask", key="ask_btn", use_container_width=True, help="Click to ask the bot"):
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
 
