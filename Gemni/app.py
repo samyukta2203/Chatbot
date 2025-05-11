@@ -31,7 +31,7 @@ button_text_color = "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#00FF00"
+ask_button_label_color = "#00FF00"  # Green text
 ask_button_hover_color = "#FF0000"
 
 # ---------- Custom Styling ----------
@@ -93,27 +93,27 @@ st.markdown(f"""
     .recommend-link:hover {{
         background-color: {button_hover_color};
     }}
-    .ask-button {{
+    .custom-ask-btn {{
         background-color: {button_bg_color};
-        color: {ask_button_label_color} !important;
-        border: none;
         border-radius: 30px;
         padding: 12px 24px;
         font-size: 16px;
         font-weight: bold;
         text-transform: uppercase;
-        cursor: pointer;
+        border: none;
+        color: {ask_button_label_color} !important;
         transition: background 0.3s, transform 0.2s;
         margin-top: 15px;
         width: 100%;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
     }}
-    .ask-button:hover {{
+    .custom-ask-btn:hover {{
         background-color: {ask_button_hover_color};
-        transform: scale(1.02);
         color: white !important;
-    }}
-    .ask-button:active {{
-        transform: scale(0.97);
+        transform: scale(1.02);
     }}
     .stTextInput input {{
         background-color: {input_bg_color} !important;
@@ -171,18 +171,50 @@ furniture_links = {
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ---------- Input with Styled Label ----------
+# ---------- Input ----------
 st.markdown(
     f"<div style='color:{input_label_color}; font-weight:600; font-size:16px; padding-bottom:6px;'>What furniture are you looking for?</div>",
     unsafe_allow_html=True
 )
 user_input = st.text_input("What furniture are you looking for?", key="input", label_visibility="collapsed")
 
-# ---------- Ask Button ----------
-if st.button("Ask", key="ask_btn", use_container_width=True):
+# ---------- Ask Button (custom-styled) ----------
+ask_clicked = st.markdown(
+    f"<a href='#' class='custom-ask-btn' onclick='document.dispatchEvent(new Event(\"ask_btn\")); return false;'>Ask</a>",
+    unsafe_allow_html=True
+)
+
+# JavaScript-based workaround to detect click
+st.markdown("""
+    <script>
+    const doc = window.parent.document;
+    const btn = doc.querySelector('a.custom-ask-btn');
+    if (btn && !window.hasClickListener) {
+        window.hasClickListener = true;
+        btn.addEventListener('click', () => {
+            const event = new Event("ask_btn");
+            document.dispatchEvent(event);
+        });
+    }
+    </script>
+""", unsafe_allow_html=True)
+
+# Hidden input event (simulate a button click)
+ask_event = st.experimental_get_query_params().get("ask_event", None)
+
+if "ask_triggered" not in st.session_state:
+    st.session_state.ask_triggered = False
+
+# Streamlit doesn't allow JS-triggered input natively, use workaround
+ask_placeholder = st.empty()
+if ask_placeholder.button("Trigger Ask", key="trigger_btn", help="hidden", label_visibility="collapsed"):
+    st.session_state.ask_triggered = True
+
+# Run logic if Ask is clicked
+if st.session_state.ask_triggered or st.button(" ", key="hidden_btn", label_visibility="collapsed"):
+    st.session_state.ask_triggered = False
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
-
         prompt = persona + "\nUser: " + user_input
         with st.spinner("Generating recommendation..."):
             response = model.generate_content(prompt)
