@@ -140,17 +140,26 @@ st.markdown(f"""
 st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
-st.sidebar.markdown("### 🤖 About")
-image = Image.open("Gemni/chatbot_logo.png")
-st.sidebar.image(image, caption="FurniMate Logo", use_container_width=True)
-st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
+st.sidebar.markdown("### 🛠️ Settings")
+
+st.sidebar.markdown("### 🤖 About FurniMate")
+st.sidebar.info("""
+Welcome to **FurniMate**, your personalized furniture advisor! Just ask, and we'll help you find the perfect pieces for your home.
+
+**How it works:**  
+FurniMate uses smart AI to provide tailored furniture recommendations based on your needs. It's like having a shopping assistant right at your fingertips!
+""")
 
 st.sidebar.markdown("### 💡 Try Asking:")
 st.sidebar.markdown("""
-- 🛏️ Suggest a bed for a small room  
-- 🪑 I need a comfy chair  
-- 🛋️ Show me sofas  
-- 📚 Recommend a bookshelf
+Here are a few ideas to get started:
+
+- **Suggest a bed for a small room**  
+- **I need a comfy chair**  
+- **Show me sofas**  
+- **Recommend a bookshelf**  
+
+Have fun exploring your options!
 """)
 
 # ---------- Chat Setup ----------
@@ -174,8 +183,7 @@ user_input = st.text_input("What furniture are you looking for?", key="input", l
 
 # ---------- Ask Button ----------
 if st.button("Ask", key="ask_btn", use_container_width=True):
-    user_input = st.session_state.get("input", "")
-    if user_input and user_input.strip():
+    if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
 
         prompt = persona + "\nUser: " + user_input
