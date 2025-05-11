@@ -31,7 +31,7 @@ button_text_color = "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#00FF00"  # Green text
+ask_button_label_color = "#ffffff" if not st.session_state.dark_mode else "#00FF00"  # White for bright mode and green for dark mode
 ask_button_hover_color = "#FF0000"
 
 # ---------- Custom Styling ----------
