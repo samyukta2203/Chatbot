@@ -178,42 +178,11 @@ st.markdown(
 )
 user_input = st.text_input("What furniture are you looking for?", key="input", label_visibility="collapsed")
 
-# ---------- Ask Button (custom-styled) ----------
-ask_clicked = st.markdown(
-    f"<a href='#' class='custom-ask-btn' onclick='document.dispatchEvent(new Event(\"ask_btn\")); return false;'>Ask</a>",
-    unsafe_allow_html=True
-)
+# ---------- Ask Button ----------
+ask_button = st.button("Ask", key="ask_btn", help="Click to get suggestions", use_container_width=True)
 
-# JavaScript-based workaround to detect click
-st.markdown("""
-    <script>
-    const doc = window.parent.document;
-    const btn = doc.querySelector('a.custom-ask-btn');
-    if (btn && !window.hasClickListener) {
-        window.hasClickListener = true;
-        btn.addEventListener('click', () => {
-            const event = new Event("ask_btn");
-            document.dispatchEvent(event);
-        });
-    }
-    </script>
-""", unsafe_allow_html=True)
-
-# Use st.query_params() to detect button press
-query_params = st.query_params()
-ask_event = query_params.get("ask_event", None)
-
-if "ask_triggered" not in st.session_state:
-    st.session_state.ask_triggered = False
-
-# Streamlit doesn't allow JS-triggered input natively, use workaround
-ask_placeholder = st.empty()
-if ask_placeholder.button("Trigger Ask", key="trigger_btn", help="hidden", label_visibility="collapsed"):
-    st.session_state.ask_triggered = True
-
-# Run logic if Ask is clicked
-if st.session_state.ask_triggered or st.button(" ", key="hidden_btn", label_visibility="collapsed"):
-    st.session_state.ask_triggered = False
+# Check if button is clicked
+if ask_button:
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
         prompt = persona + "\nUser: " + user_input
