@@ -10,7 +10,7 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
-# Sidebar: Dark Mode First
+# Sidebar settings toggle
 st.sidebar.markdown("## 🛠️ Settings")
 st.session_state.dark_mode = st.sidebar.toggle(
     "🌗 Dark Mode",
@@ -18,23 +18,23 @@ st.session_state.dark_mode = st.sidebar.toggle(
     label_visibility="visible"
 )
 
-# Theme-dependent variables
-bg_color = "#f4f4f4" if not st.session_state.dark_mode else "#1c1c1c"
-text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-chat_bg_user = "#00796b" if not st.session_state.dark_mode else "#009688"
-chat_bg_bot = "#e0e0e0" if not st.session_state.dark_mode else "#333333"
-sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
-sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
-button_bg_color = "#000000" if not st.session_state.dark_mode else "#009688"
-button_hover_color = "#1E3A8A" if not st.session_state.dark_mode else "#45a049"
-ask_button_label_color = "#00FF00"
-ask_button_hover_color = "#FF0000"
-input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
-input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-input_label_color_input = "#000000" if not st.session_state.dark_mode else "#ffffff"
+# Theme variables
+dark_mode = st.session_state.dark_mode
+bg_color = "#1c1c1c" if dark_mode else "#f4f4f4"
+text_color = "#ffffff" if dark_mode else "#000000"
+chat_bg_user = "#009688" if dark_mode else "#00796b"
+chat_bg_bot = "#333333" if dark_mode else "#e0e0e0"
+conversation_text_color = "#ffffff" if dark_mode else "#000000"
+button_bg_color = "#009688" if dark_mode else "#000000"
+button_hover_color = "#FF0000"  # Red hover
+ask_button_label_color = "#00FF00"  # Green text
+input_label_color = "#ffffff" if dark_mode else "#000000"
+input_bg_color = "#333333" if dark_mode else "#ffffff"
+input_text_color = "#ffffff" if dark_mode else "#000000"
+sidebar_bg_color = "#1a1a1a" if dark_mode else "#ffffff"
+sidebar_text_color = "#ffffff" if dark_mode else "#000000"
 
-# Custom Styling
+# ---------- Custom Styling ----------
 st.markdown(f"""
     <style>
     html, body, [data-testid="stApp"] {{
@@ -108,16 +108,12 @@ st.markdown(f"""
         width: 100%;
     }}
     .ask-button:hover {{
-        background-color: {ask_button_hover_color};
+        background-color: {button_hover_color};
         transform: scale(1.02);
+        color: #ffffff !important;
     }}
     .ask-button:active {{
         transform: scale(0.97);
-    }}
-    label[for="input"] {{
-        color: {input_label_color_input} !important;
-        font-weight: bold;
-        font-size: 16px;
     }}
     .stTextInput input {{
         background-color: {input_bg_color} !important;
@@ -141,9 +137,9 @@ st.markdown(f"""
 # ---------- Title ----------
 st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
-# ---------- Sidebar Content ----------
+# ---------- Sidebar ----------
 image = Image.open("Gemni/chatbot_logo.png")
-st.sidebar.image(image, use_container_width=True)
+st.sidebar.image(image, use_container_width=True)  # Logo above welcome text
 
 st.sidebar.markdown("""
 **Welcome to FurniMate!**  
@@ -163,7 +159,7 @@ st.sidebar.markdown("""
 - Show me trendy bookshelves
 """)
 
-# ---------- Chat Setup ----------
+# Chat persona
 persona = """
 You are a helpful furniture recommendation assistant. Always respond like a friendly advisor and never mention being AI or an API.
 """
@@ -179,8 +175,9 @@ furniture_links = {
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ---------- Input ----------
-user_input = st.text_input("What furniture are you looking for?", key="input", label_visibility="visible")
+# ---------- Input Label ----------
+st.markdown(f"<label style='color:{input_label_color}; font-weight:bold; font-size:16px;'>What furniture are you looking for?</label>", unsafe_allow_html=True)
+user_input = st.text_input("", key="input", label_visibility="collapsed")
 
 # ---------- Ask Button ----------
 if st.button("Ask", key="ask_btn", use_container_width=True):
