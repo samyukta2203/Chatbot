@@ -33,6 +33,7 @@ input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 ask_button_label_color = "#00FF00"  # Green text for Ask button
 ask_button_hover_color = "#FF0000"  # Red hover color for Ask button
+input_label_color_input = "#000000" if not st.session_state.dark_mode else "#ffffff"  # "What furniture are you looking for?" color
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -115,7 +116,7 @@ st.markdown(f"""
         transform: scale(0.97);
     }}
     label[for="input"] {{
-        color: {input_label_color} !important;
+        color: {input_label_color_input} !important;
         font-weight: bold;
         font-size: 16px;
     }}
@@ -150,7 +151,7 @@ Your home’s new best friend in furniture shopping. ✨
 Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. It's like having a personal shopper who knows exactly what your home needs. 🛋️💡
 """)
 image = Image.open("Gemni/chatbot_logo.png")
-st.sidebar.image(image, use_container_width=True)
+st.sidebar.image(image, use_container_width=True)  # Correct placement of the image
 st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
 st.sidebar.markdown("### 💡 Try Asking:")
