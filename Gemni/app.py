@@ -31,7 +31,7 @@ button_text_color = "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-ask_button_label_color = "#ffffff" if not st.session_state.dark_mode else "#00FF00"  # Ensure this is white in bright mode
+ask_button_label_color = "#ffffff" if not st.session_state.dark_mode else "#00FF00"  # Set label to white in bright mode
 ask_button_hover_color = "#FF0000"
 
 # ---------- Custom Styling ----------
@@ -93,27 +93,27 @@ st.markdown(f"""
     .recommend-link:hover {{
         background-color: {button_hover_color};
     }}
-    .custom-ask-btn {{
+    .ask-button {{
         background-color: {button_bg_color};
+        color: {ask_button_label_color} !important;
+        border: none;
         border-radius: 30px;
         padding: 12px 24px;
         font-size: 16px;
         font-weight: bold;
         text-transform: uppercase;
-        border: none;
-        color: {ask_button_label_color} !important;
+        cursor: pointer;
         transition: background 0.3s, transform 0.2s;
         margin-top: 15px;
         width: 100%;
-        display: inline-block;
-        text-align: center;
-        cursor: pointer;
-        text-decoration: none;
     }}
-    .custom-ask-btn:hover {{
+    .ask-button:hover {{
         background-color: {ask_button_hover_color};
-        color: white !important;
         transform: scale(1.02);
+        color: white !important;
+    }}
+    .ask-button:active {{
+        transform: scale(0.97);
     }}
     .stTextInput input {{
         background-color: {input_bg_color} !important;
@@ -126,6 +126,10 @@ st.markdown(f"""
     .stTextInput input:focus {{
         box-shadow: 0 0 5px {button_bg_color};
         outline: none;
+    }}
+    /* Add styles to force the button label color */
+    .stButton button {{
+        color: {ask_button_label_color} !important;
     }}
     </style>
 """, unsafe_allow_html=True)
