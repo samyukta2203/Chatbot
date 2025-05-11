@@ -150,8 +150,11 @@ Your home’s new best friend in furniture shopping. ✨
 **How it works:**  
 Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. It's like having a personal shopper who knows exactly what your home needs. 🛋️💡
 """)
+
+# **Correct placement of the logo above the welcome text**
 image = Image.open("Gemni/chatbot_logo.png")
 st.sidebar.image(image, use_container_width=True)  # Correct placement of the image
+
 st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
 st.sidebar.markdown("### 💡 Try Asking:")
