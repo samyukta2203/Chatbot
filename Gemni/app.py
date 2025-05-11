@@ -26,6 +26,7 @@ sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
 sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 button_bg_color = "#00796b" if not st.session_state.dark_mode else "#009688"
+button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
 button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
@@ -88,9 +89,30 @@ st.markdown(f"""
         font-size: 14px;
     }}
     .recommend-link:hover {{
-        background-color: #00574B;
+        background-color: {button_hover_color};
     }}
-    label {{
+    .custom-button {{
+        background-color: {button_bg_color};
+        color: {button_text_color} !important;
+        border: none;
+        border-radius: 30px;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+        margin-top: 15px;
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+        text-decoration: none;
+    }}
+    .custom-button:hover {{
+        background-color: {button_hover_color};
+        transform: scale(1.02);
+    }}
+    .stTextInput label {{
         color: {input_label_color} !important;
     }}
     .stTextInput input {{
@@ -105,21 +127,9 @@ st.markdown(f"""
         box-shadow: 0 0 5px {button_bg_color};
         outline: none;
     }}
-    .custom-submit {{
-        background-color: {button_bg_color};
-        color: {button_text_color};
-        border: none;
-        border-radius: 30px;
-        padding: 12px 24px;
-        font-size: 16px;
-        font-weight: bold;
-        text-transform: uppercase;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 15px;
-    }}
-    .custom-submit:hover {{
-        opacity: 0.9;
+    .sidebar .sidebar-content {{
+        background-color: {sidebar_bg_color} !important;
+        color: {sidebar_text_color} !important;
     }}
     </style>
 """, unsafe_allow_html=True)
@@ -158,42 +168,29 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
 # ---------- Input ----------
-user_input = st.text_input("What furniture are you looking for?", key="input")
+with st.form("chat_form", clear_on_submit=False):
+    user_input = st.text_input("What furniture are you looking for?", key="input")
+    submitted = st.form_submit_button(
+        label="Ask",
+        use_container_width=True
+    )
 
-# ---------- Custom Submit Button ----------
-submit_html = f"""
-<form action="" method="post">
-    <input type="hidden" name="submit_trigger" value="1">
-    <button class="custom-submit" type="submit">Ask</button>
-</form>
-"""
-st.markdown(submit_html, unsafe_allow_html=True)
+# ---------- Ask Button Logic ----------
+if submitted and user_input.strip():
+    st.session_state.chat_history.append(("user", user_input))
+    prompt = persona + "\nUser: " + user_input
+    with st.spinner("Generating recommendation..."):
+        response = model.generate_content(prompt)
+        reply = response.text
 
-# ---------- Handle Submission ----------
-if st.session_state.get("submit_trigger", False):
-    st.session_state.submit_trigger = False
+    for key, url in furniture_links.items():
+        if key in user_input.lower():
+            reply += f"<br><a class='recommend-link' href='{url}' target='_blank'>View {key.title()} Options</a>"
+            break
 
-if "submit_trigger" not in st.session_state:
-    st.session_state.submit_trigger = False
-
-# Use query param workaround to detect button click
-if st.requested_url_query.get("submit_trigger") == "1" or st.session_state.submit_trigger:
-    st.session_state.submit_trigger = True
-    if user_input.strip():
-        st.session_state.chat_history.append(("user", user_input))
-        prompt = persona + "\nUser: " + user_input
-        with st.spinner("Generating recommendation..."):
-            response = model.generate_content(prompt)
-            reply = response.text
-
-        for key, url in furniture_links.items():
-            if key in user_input.lower():
-                reply += f"<br><a class='recommend-link' href='{url}' target='_blank'>View {key.title()} Options</a>"
-                break
-
-        st.session_state.chat_history.append(("bot", reply))
-    else:
-        st.warning("Please enter a question first.")
+    st.session_state.chat_history.append(("bot", reply))
+elif submitted:
+    st.warning("Please enter a question first.")
 
 # ---------- Display Chat ----------
 st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
