@@ -31,6 +31,7 @@ button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
+ask_button_label_color = "#ffffff"  # Change the label color here
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -93,7 +94,7 @@ st.markdown(f"""
     }}
     .ask-button {{
         background-color: {button_bg_color};
-        color: {button_text_color} !important;
+        color: {ask_button_label_color} !important;
         border: none;
         border-radius: 30px;
         padding: 12px 24px;
@@ -140,26 +141,23 @@ st.markdown(f"""
 st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
-st.sidebar.markdown("### 🛠️ Settings")
-
-st.sidebar.markdown("### 🤖 About FurniMate")
-st.sidebar.info("""
-Welcome to **FurniMate**, your personalized furniture advisor! Just ask, and we'll help you find the perfect pieces for your home.
+st.sidebar.markdown("""
+**Welcome to FurniMate!**  
+Your home’s new best friend in furniture shopping. ✨  
 
 **How it works:**  
-FurniMate uses smart AI to provide tailored furniture recommendations based on your needs. It's like having a shopping assistant right at your fingertips!
+Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. It's like having a personal shopper who knows exactly what your home needs. 🛋️💡
 """)
+image = Image.open("Gemni/chatbot_logo.png")
+st.sidebar.image(image, caption="FurniMate Logo", use_container_width=True)
+st.sidebar.info("FurniMate is your smart assistant for personalized furniture suggestions. Just ask!")
 
 st.sidebar.markdown("### 💡 Try Asking:")
 st.sidebar.markdown("""
-Here are a few ideas to get started:
-
-- **Suggest a bed for a small room**  
-- **I need a comfy chair**  
-- **Show me sofas**  
-- **Recommend a bookshelf**  
-
-Have fun exploring your options!
+- Suggest a cozy sofa for a living room  
+- I need a stylish desk  
+- Recommend a comfortable bed for a small room  
+- Show me trendy bookshelves
 """)
 
 # ---------- Chat Setup ----------
