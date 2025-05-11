@@ -26,13 +26,12 @@ sidebar_bg_color = "#ffffff" if not st.session_state.dark_mode else "#1a1a1a"
 sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 button_bg_color = "#4CAF50"  # Green color for the "Ask" button in both modes
-button_hover_color = "#45a049"
+button_hover_color = "#FF5733"  # Red on hover
 button_text_color = "#ffffff"  # White text for button
 ask_button_label_color = "#4CAF50"  # Green text color for the "Ask" button label by default
-ask_button_hover_label_color = "#FF5733"  # Red text on hover
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
-input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
+input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"  # Black/White for the label
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -107,18 +106,18 @@ st.markdown(f"""
         margin-top: 15px;
         width: 100%;
     }}
+    .ask-button span {{
+        color: {ask_button_label_color} !important;
+    }}
     .ask-button:hover {{
         background-color: {button_hover_color};
         transform: scale(1.02);
     }}
+    .ask-button:hover span {{
+        color: #FF5733 !important;  # Red color when hovering
+    }}
     .ask-button:active {{
         transform: scale(0.97);
-    }}
-    .ask-button span {{
-        color: {ask_button_label_color} !important;
-    }}
-    .ask-button:hover span {{
-        color: {ask_button_hover_label_color} !important;
     }}
     label[for="input"] {{
         color: {input_label_color} !important;
@@ -145,7 +144,6 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ---------- Sidebar ----------
-
 image = Image.open("Gemni/chatbot_logo.png")
 st.sidebar.image(image, caption="FurniMate Logo", use_container_width=True)  # Image now above welcome message
 
