@@ -136,12 +136,17 @@ st.markdown(f"""
 # ---------- Title ----------
 st.markdown("<div class='title'>🛋️ FurniMate – Your Furniture Advisor</div>", unsafe_allow_html=True)
 
-# ---------- Sidebar ----------
-# Removed chatbot logo image
+# ---------- Sidebar with Image and Info ----------
+try:
+    chatbot_image = Image.open("chatbot.png")  # Make sure the image exists in the same directory
+    st.sidebar.image(chatbot_image, use_column_width=True, output_format="PNG", caption="FurniMate Assistant")
+except Exception as e:
+    st.sidebar.warning("Chatbot image could not be loaded.")
+
 st.sidebar.markdown("""  
 **Welcome to FurniMate!**  
 Your home’s new best friend in furniture shopping. ✨  
-  
+
 **How it works:**  
 Simply ask, and let FurniMate’s smart AI work its magic, bringing personalized furniture suggestions right to your fingertips. 🛋️💡  
 """)
