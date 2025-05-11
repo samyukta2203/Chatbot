@@ -30,6 +30,7 @@ button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
 button_text_color = "#ffffff"
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
+input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 
 # ---------- Custom Styling ----------
 st.markdown(f"""
@@ -48,8 +49,8 @@ st.markdown(f"""
     .chat-container {{
         display: flex;
         flex-direction: column;
-        gap: 16px;
-        margin-top: 30px;
+        gap: 20px;
+        margin-top: 40px;
         padding: 0 10%;
     }}
     .chat-box {{
@@ -59,8 +60,7 @@ st.markdown(f"""
         word-wrap: break-word;
         line-height: 1.6;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 80%;
-        width: fit-content;
+        max-width: fit-content;
     }}
     .user {{
         align-self: flex-end;
@@ -112,6 +112,9 @@ st.markdown(f"""
     .ask-button:active {{
         transform: scale(0.97);
     }}
+    .stTextInput label {{
+        color: {input_label_color} !important;
+    }}
     .stTextInput input {{
         background-color: {input_bg_color} !important;
         color: {input_text_color} !important;
@@ -119,10 +122,6 @@ st.markdown(f"""
         padding: 12px 15px;
         border: none;
         font-size: 16px;
-    }}
-    .stTextInput input::placeholder {{
-        color: {input_text_color} !important;
-        opacity: 0.6;
     }}
     .stTextInput input:focus {{
         box-shadow: 0 0 5px {button_bg_color};
@@ -168,9 +167,10 @@ furniture_links = {
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ---------- Input & Ask ----------
+# ---------- Input ----------
 user_input = st.text_input("What furniture are you looking for?", key="input")
 
+# ---------- Ask Button ----------
 if st.button("Ask", key="ask_btn", use_container_width=True):
     if user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
