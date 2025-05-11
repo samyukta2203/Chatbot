@@ -27,7 +27,7 @@ sidebar_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 conversation_text_color = "#ffffff" if st.session_state.dark_mode else "#000000"
 button_bg_color = "#00796b" if not st.session_state.dark_mode else "#009688"
 button_hover_color = "#45a049" if st.session_state.dark_mode else "#1E3A8A"
-button_text_color = "#ffffff"
+button_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"  # FIXED HERE
 input_bg_color = "#ffffff" if not st.session_state.dark_mode else "#333333"
 input_text_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
 input_label_color = "#000000" if not st.session_state.dark_mode else "#ffffff"
@@ -93,7 +93,7 @@ st.markdown(f"""
     }}
     .ask-button {{
         background-color: {button_bg_color};
-        color: {button_text_color};
+        color: {button_text_color} !important;  /* FIXED HERE */
         border: none;
         border-radius: 30px;
         padding: 12px 24px;
